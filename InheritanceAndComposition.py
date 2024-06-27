@@ -148,6 +148,11 @@ c.showprops()
 
 # By implementing an interface, a particular class makes a contract to provide a certain kind of bahvior or capability
 
+# I created a small focus class, JSONify, 
+# to now use whenever I want another class to be able to indicate that it knows how to represent itself as JSON
+# Didn't have to modify the base class, which gives flexibilityto aply this new class anywhere it's needed
+
+# Interfaces are really useful for declaring that a class has a capability that it provides
 
 from abc import ABC, abstractmethod
 
@@ -161,15 +166,22 @@ class GraphicShape(ABC):
         pass
 
 # creating an abstract base class to make classes use JSON
-class Jsonify
+class Jsonify(ABC):
+    @abstractmethod
+    def toJSON(self):
+        pass
 
-class Circle(GraphicShape):
+class Circle(GraphicShape, Jsonify):
     def __init__(self, radius):
         self.radius = radius
 
     def calcArea(self):
         return 3.14 * (self.radius ** 2)
+    
+    def toJSON(self):
+        return f"{{'Circle': {str(self.calcArea())}}}"
 
 
 c = Circle(10)
 print(c.calcArea())
+print(c.toJSON())
