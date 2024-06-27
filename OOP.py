@@ -34,7 +34,7 @@ print(book1.title)
 # Using instance methods and attributes
 # To-dos: add properties, print the price of book1, try setting the discount, 
 # and properties with double underscores are hidden by the interpretor
-
+'''
 class Book:
     def __init__(self, title, author, pages, price):
         self.title = title
@@ -66,3 +66,79 @@ print(b2.getprice())
 #print(b2.__secret)
 # Line below 
 print(b2._Book__secret)
+'''
+# Checking Instance Types:
+# To-dos: use type() to inspect the object type and compare two types together, 
+# use isinstance to compare a specific instance to a known type
+'''
+class Book:
+    def __init__(self, title):
+        self.title = title
+
+class Newspaper:
+    def __init__(self,name):
+        self.name = name
+
+b1 = Book("The Catcher in the Rye")
+b2 = Book("The Grapes of Wrath")
+n1 = Newspaper("The Washington Post")
+n2 = Newspaper("The New York Times")
+
+print(type(b1))
+print(type(n1))
+
+print(type(b1) == type(b2))
+print(type(b1) == type(n2))
+
+print(isinstance(b1, Book))
+print(isinstance(n1, Newspaper))
+print(isinstance(n2, Book))
+# isintance also works with inheritance, as shown below
+print(isinstance(n2, object))
+'''
+
+# Class Methods and Members:
+# To-do's: properties defined at the class level are shared by all instances,
+#       double-underscore properties are hidden from other classes, create a class method, create a static method, 
+#       access the class attribute
+
+# Instance methods receive a specific object instance as an arguement and operate on data specific to that object instance
+# Not many good uses of static methods, but one good use is to implement a singleton design pattern
+
+class Book:
+
+    BOOK_TYPES = ("HARDCOVER", "PAPERBACK", "EBOOK")
+
+    __booklist = None
+    
+
+    @classmethod
+    def get_book_types(cls):
+        return cls.BOOK_TYPES
+    
+    def getbooklist():
+        if Book.__booklist == None:
+            Book.__booklist = []
+        return Book.__booklist
+
+    def set_title(self, newtitle):
+        self.title = newtitle
+
+    def __init__(self, title, booktype):
+        self.title = title
+        if (not booktype in Book.BOOK_TYPES):
+            raise ValueError(f"{booktype} is not a valid book type")
+        else:
+            self.booktype = booktype
+
+print("Book types: ", Book.get_book_types())
+
+b1 = Book("Title1", "HARDCOVER")
+# Line below causes error because comic is not an accepted book type, will ignore it so code will run
+#b2 = Book("Title1", "COMIC")
+b2 = Book("Title1", "PAPERBACK")
+
+thebooks = Book.getbooklist()
+thebooks.append(b1)
+thebooks.append(b2)
+print(thebooks)
