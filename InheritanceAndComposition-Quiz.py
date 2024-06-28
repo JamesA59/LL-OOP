@@ -20,11 +20,11 @@ class Asset(ABC):
         self.price = price
 
     @abstractmethod
-    def noinstances(self):
+    def get_description(self):
         pass
 
 class Stock(Asset):
-    def __init__(self, price, company, ticker):
+    def __init__(self, ticker, price, company):
         super().__init__(price)
         self.company = company
         self.ticker = ticker
@@ -44,12 +44,12 @@ class Bond(Asset):
 
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
-'''
+
 try:
    ast = Asset(100.0)
 except:
    print("Can't instantiate Asset!")
-'''
+
 
 msft = Stock("MSFT", 342.0, "Microsoft Corp")
 goog = Stock("GOOG", 135.0, "Google Inc")
