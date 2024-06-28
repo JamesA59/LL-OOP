@@ -154,6 +154,7 @@ c.showprops()
 
 # Interfaces are really useful for declaring that a class has a capability that it provides
 
+'''
 from abc import ABC, abstractmethod
 
 
@@ -185,3 +186,80 @@ class Circle(GraphicShape, Jsonify):
 c = Circle(10)
 print(c.calcArea())
 print(c.toJSON())
+'''
+
+# Understanding Composition:
+
+# Can create complex objects out of simpler ones
+# Inheritance is a "is a " type of relationship, a book is a publication
+# Composition uses more of a "has a " relationship, a book has an author
+# Inheritance and composition are not exclusive, typically combine both depending on application's needs
+
+# commenting out the author fname and lnmae arguements after author class is created
+# Added the author = None default to the Book class
+
+class Book:
+    #def __init__(self, title, price, authorfname, authorlname):
+    def __init__(self, title, price, author = None):
+        self.title = title
+        self.price = price
+
+        self.author = author
+        
+        #self.authorfname = authorfname
+        #self.authorlname = authorlname
+
+        self.chapters = []
+
+    # After chapter class was created, commented out name and pages arguement here and added chapter arguement
+    # Creates a relationship where a book has a collection of chapter objects
+
+    #def addchapter(self, name, pages):
+        #self.chapters.append((name, pages))
+    def addchapter(self, chapter):
+        self.chapters.append((chapter))
+        
+    # Adding a method to calculate the number of pages in a book
+    def getbookpagecount(self):
+        result = 0
+        for ch in self.chapters:
+            result += ch.pagecount
+        return result
+
+# Added the author class
+
+class Author:
+    def __init__(self, fname, lname):
+        self.fname = fname
+        self.lname = lname
+
+    def __str__(self):
+        return f"{self.fname} {self.lname}"
+    
+# Added chapter class
+
+class Chapter:
+    def __init__(self, name, pagecount):
+        self.name = name
+        self.pagecount = pagecount
+
+# added auth object
+auth = Author("Leo", "Tolstoy")
+
+# commented out fname and lname arguements since they are no longer used and added auth
+
+# = Book("War and Peace", 39.0, "Leo", "Tolstoy")
+b1 = Book("War and Peace", 39.0, auth)
+
+# Will edit the addchapter lines because now we add chapter objects to the book instead of chapter arguements
+
+#b1.addchapter("Chapter 1", 125)
+b1.addchapter(Chapter("Chapter 1", 125))
+#b1.addchapter("Chapter 2", 97)
+b1.addchapter(Chapter("Chapter 2", 97))
+#b1.addchapter("Chapter 3", 143)
+b1.addchapter(Chapter("Chapter 3", 143))
+
+print(b1.title)
+print(b1.author)
+print(b1.getbookpagecount())
