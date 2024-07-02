@@ -22,7 +22,7 @@
 
 # To-dos: use the __str__ method to return a string and use the __repr__ method to return an obj representation
 
-
+'''
 class Book:
     def __init__(self, title, author, price):
         super().__init__()
@@ -45,3 +45,65 @@ print(b1)
 print(b2)
 print(str(b1))
 print(repr(b2))
+'''
+
+# Equality and comparison:
+
+# By default, plain objects in in Python don't know how to compare themselves to each other
+# But they can be taught using the equality and comparison magic methods
+
+# To-dos: use __eq__ method ot check for equality between two objects, use __ge__ to establish >= relationship with another object,
+#       use __le__ to establish <= relationship with another object, use __lt__ to establish < relationship with another object, 
+#       use __gt__ to establish > relationship with another object, and sorting
+
+# Now that less than calculation support has been added, can now sort
+# Built-in sort feature uses less than
+
+class Book:
+    def __init__(self, title, author, price):
+        super().__init__()
+        self.title = title
+        self.author = author
+        self.price = price
+
+    def __eq__(self, value):
+        if not isinstance(value, Book):
+            raise ValueError("Can't compare book to a non-book")
+        return (self.title == value.title and 
+                self.author == value.author and
+                self.price == value.price)
+
+    # TODO: the __ge__ establishes >= relationship with another obj
+    def __ge__(self, value):
+        if not isinstance(value, Book):
+            raise ValueError("Can't compare book to a non-book")
+        return self.price >= value.price
+
+    # TODO: the __lt__ establishes < relationship with another obj
+    def __lt__(self, value):
+        if not isinstance(value, Book):
+            raise ValueError("Can't compare book to a non-book")
+        return self.price < value.price
+
+
+b1 = Book("War and Peace", "Leo Tolstoy", 39.95)
+b2 = Book("The Catcher in the Rye", "JD Salinger", 29.95)
+b3 = Book("War and Peace", "Leo Tolstoy", 39.95)
+b4 = Book("To Kill a Mockingbird", "Harper Lee", 24.95)
+
+# Without __eq__ function b1 == b3 would return false even though all the values are the same, 
+print(b1 == b3)
+print(b1 == b2)
+# Below line raises value errer due to __eq__ function
+#print(b1 == 42)
+
+print(b2 >= b1)
+print(b2 < b1)
+
+# TODO: Now we can sort them too
+
+books = [b1, b3, b2, b4]
+# .sort() is a built-in feature
+# Will sort by price because of __lt__ function 
+books.sort()
+print([book.title for book in books])
