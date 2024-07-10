@@ -59,6 +59,7 @@ print(repr(b2))
 # Now that less than calculation support has been added, can now sort
 # Built-in sort feature uses less than
 
+'''
 class Book:
     def __init__(self, title, author, price):
         super().__init__()
@@ -100,10 +101,60 @@ print(b1 == b2)
 print(b2 >= b1)
 print(b2 < b1)
 
-# TODO: Now we can sort them too
-
+# Will sort by price because of __lt__ function 
 books = [b1, b3, b2, b4]
 # .sort() is a built-in feature
-# Will sort by price because of __lt__ function 
 books.sort()
 print([book.title for book in books])
+'''
+
+# Attribute access:
+
+# Magic methods give you complete access over how an objects attributes are accessed
+
+# To-dos: call __get__attribute__  when  an attribute is retrieved, call __setattr__ when an attribute value is set, 
+#       and when __getattribute__ lookup fails call __getattr__. The last method can pretty much generate attributes on the fly
+
+from typing import Any
+
+class Book:
+    def __init__(self, title, author, price):
+        super().__init__()
+        self.title = title
+        self.author = author
+        self.price = price
+        self._discount = 0.1
+
+    # The __str__ function is used to return a user-friendly string representation of the object
+    def __str__(self):
+        return f"{self.title} by {self.author}, costs {self.price}"
+
+    # Don't directly access the attr name otherwise a recursive loop is created
+    def __getattribute__(self, name):
+        if name == "price":
+            p = super().__getattribute__("price")
+            d = super().__getattribute__("_discount")
+            return p - (p * d)
+        return super().__getattribute__(name)
+
+    # Don't set the attr directly here otherwise a recursive loop causes a crash
+    def __setattr__(self, name, value):
+        if name == "price":
+            if type(value) is not float:
+                raise ValueError("The 'price' attr must be a float")
+        return super().__setattr__(name,value)
+
+    # This version only gets called if the __getattribute__ version hasn't been defined
+    def __getattr__(self, name):
+        return name + " is not here!"
+
+b1 = Book("War and Peace", "Leo Tolstoy", 39.95)
+b2 = Book("The Catcher in the Rye", "JD Salinger", 29.95)
+
+b1.price = 38.95
+print(b1.price)
+
+b1.price = float(40)
+print(b1)
+
+print(b1.randomprop)
