@@ -114,7 +114,7 @@ print([book.title for book in books])
 
 # To-dos: call __get__attribute__  when  an attribute is retrieved, call __setattr__ when an attribute value is set, 
 #       and when __getattribute__ lookup fails call __getattr__. The last method can pretty much generate attributes on the fly
-
+'''
 from typing import Any
 
 class Book:
@@ -158,3 +158,31 @@ b1.price = float(40)
 print(b1)
 
 print(b1.randomprop)
+'''
+
+# Callable Objects:
+
+# To-dos: use the __call__ method to call the object like a function
+
+class Book:
+    def __init__(self, title, author, price):
+        super().__init__()
+        self.title = title
+        self.author = author
+        self.price = price
+
+    def __str__(self):
+        return f"{self.title} by {self.author}, costs {self.price}"
+
+    def __call__(self, title, author, price):
+        self.title = title
+        self.author = author
+        self.price = price
+
+
+b1 = Book("War and Peace", "Leo Tolstoy", 39.95)
+b2 = Book("The Catcher in the Rye", "JD Salinger", 29.95)
+
+print(b1)
+b1("Anna Karenina", "Leo Tolstoy", 49.95)
+print(b1)
