@@ -86,6 +86,7 @@ print(b2.description)
 
 # Another way of defining a default value is by using the field function
 
+'''
 from dataclasses import dataclass, field
 
 # for price_func
@@ -115,3 +116,39 @@ b2 = Book("War and Peace", "Leo Tolstoy", 1225)
 b3 = Book("The Catcher in the Rye", "JD Salinger", 234)
 print(b2)
 print(b3)
+'''
+
+
+# Immutable Data Classes:
+
+# Classes where the data can't be changed
+
+# To-dos: use the "frozen" parameter to make the class immutable, 
+#       attempt to change the value of an immutable class to throw an exception ,
+#        and show that functions within the class can't change anything
+
+from dataclasses import dataclass
+
+# frozen=TRUE makes the class immutable
+@dataclass(frozen=True)
+class ImmutableClass:
+    value1: str = "Value 1"
+    value2: int = 0
+
+    # Creating a function within the class to change attribute
+    def some_func(self, newval):
+        self.value2 = newval
+
+obj = ImmutableClass()
+print(obj.value1, obj.value2)
+
+# Trying to change attribute creates error because the value is immutable
+#obj.value1 = "Another String"
+#print(obj.value1)
+
+# Calling function within class to change attribute creates error because the value is immutable
+#obj.some_func(20)
+
+# Can create instances with different attributes during creation
+obj2 = ImmutableClass("Another String", 20)
+print(obj2.value1, obj2.value2)
